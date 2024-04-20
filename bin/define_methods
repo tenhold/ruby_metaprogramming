@@ -1,0 +1,26 @@
+#!/usr/bin/ruby
+
+FILES = Dir.glob('lib/*.rb')
+FILES.each do |file_path|
+  require_relative "../#{file_path}"
+end
+
+module DefineMethods
+  FILES.each do |file_path|
+    file_name = File.basename(file_path, '.rb')
+
+    define_singleton_method(file_name) do
+      convert_to_module(file_name).new.run
+    end
+  end
+
+  class << self
+    def convert_to_module(file_name)
+      camel = file_name.split('_').collect(&:capitalize).join
+      Module.const_get(camel)
+    end
+  end
+end
+
+DefineMethods.foo
+DefineMethods.bar
