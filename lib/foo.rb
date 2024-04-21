@@ -5,5 +5,6 @@ class Foo
 
   def run
     puts @name
+    @name
   end
 end
